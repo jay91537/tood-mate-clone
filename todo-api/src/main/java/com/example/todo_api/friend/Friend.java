@@ -26,6 +26,6 @@ public class Friend {
 
     public Friend(Member request_member, Member response_member) {
         this.request_member = request_member;
-        Response_member = response_member;
+        this.Response_member = response_member;
     }
 }
