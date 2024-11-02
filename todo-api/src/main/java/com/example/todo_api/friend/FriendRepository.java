@@ -12,34 +12,25 @@ public class FriendRepository {
     @PersistenceContext
     private EntityManager em;
 
+    // 친구 관계 생성
     public void save(Friend friend){
         em.persist(friend);
     }
 
-    public Friend findById(Long friendId) {
-        return em.find(Friend.class, friendId);
-    }
+    // 친구 관계 삭제
+    public void delete(Friend friend) {em.remove(friend);}
 
-    public List<Friend> findAll(Member member) {
-        return em. createQuery ( "select f from Friend as f where f.member = :member or f.friend = :member", Friend.class)
-                .setParameter ( "member", member)
-                .getResultList();// 실행결과를 리스트로 받음
-    }
-
-    public List<Friend> findAcceptedFriend (Member member) {
-            return em.createQuery ("select f from Friend as f where (f.member = :member or f.friend = :member) and f.status = '42₴'", Friend.class)
-                    .setParameter ("member", member)
-                    .getResultList();
-    }
-
-    public List<Todo> findTodoByFriend(Member friend) {
-        return em. createQuery ("select t from Todo as t where t.member = :friend", Todo.class)
-                .setParameter ("friend", friend)
+    // 친구 관계 조회
+    // 우리는 인자로 받은 member의 friend 관계를 찾을거예요
+    public List<Friend> findByMember(Member member) {
+        return em.createQuery("select f from Friend f where f.request_member = :member_check or f.Response_member = :member_check", Friend.class)
+                .setParameter("member_check", member)
                 .getResultList();
     }
 
-    public void deleteById(Long friendId) {
-        Friend friend = findById(friendId);
-        em.remove(friend);
+    // 테스트 용도로만 사용
+    public void flushAndClear() {
+        em.flush();
+        em.clear();
     }
 }

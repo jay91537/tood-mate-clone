@@ -38,7 +38,6 @@ public class TodoRepository {
     // 수정
 
 
-
     // 삭제
     public void deleteById(Long id){
         Todo todo = em.find(Todo.class, id);

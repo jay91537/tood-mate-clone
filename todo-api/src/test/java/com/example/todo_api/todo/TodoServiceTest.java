@@ -24,7 +24,7 @@ public class TodoServiceTest {
     TodoService todoService;
 
     @Test
-    public void createTodoTest() throws Exception {
+    void createTodoTest() throws Exception {
         //given
         BDDMockito.given(memberRepository.findById(1L)).willReturn(new Member());
         //when
@@ -34,7 +34,7 @@ public class TodoServiceTest {
     }
 
     @Test
-    public void createTodoTest_When_MemberDoesNotExist() throws Exception {
+    void createTodoTest_When_MemberDoesNotExist() throws Exception {
         //given
         BDDMockito.given(memberRepository.findById(1L)).willReturn(null);
         //when
