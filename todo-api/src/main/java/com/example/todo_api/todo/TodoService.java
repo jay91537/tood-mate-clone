@@ -31,7 +31,7 @@ public class TodoService {
     public List<Todo> getTodoList(Long memberId) throws Exception{
         Member member = memberRepository.findById(memberId);
         if(member == null) {
-            throw new Exception("존재하지 않는 Id입니다");
+            throw new Exception("존재하지 않는 Id입니다.");
         }
         return todoRepository.findAllByMember(member);
     }
@@ -41,18 +41,18 @@ public class TodoService {
         Todo todo = todoRepository.findById(todoId);
         Member member = memberRepository.findById(memberId);
 
-
         if (todo == null) {
 
-            throw new Exception("존재하지 않는 id입니다");
+            throw new Exception("존재하지 않는 todoId입니다.");
         }
 
         if (member == null) {
 
-            throw new Exception("존재하지 않는 id입니다");
+            throw new Exception("존재하지 않는 memberId입니다.");
         }
 
         if(todo.getMember() != member){
+
             throw new Exception("할일은 생성한 유저만 수정할 수 있습니다.");
         }
 
@@ -60,7 +60,14 @@ public class TodoService {
     }
 
     @Transactional
-    public void deleteTodo(Long todoId) {
+    public void deleteTodo(Long todoId) throws Exception{
+        Todo todo = todoRepository.findById(todoId);
+
+        if (todo == null) {
+
+            throw new Exception("존재하지 않는 todoId입니다.");
+        }
+
         todoRepository.deleteById(todoId);
     }
 
