@@ -16,7 +16,7 @@ public class TodoService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createTodo(String content, Long memberId) throws Exception {
+    public Long createTodo(String content, Long memberId) throws Exception {
         Member member = memberRepository.findById(memberId);
 
         if(member == null){
@@ -25,6 +25,7 @@ public class TodoService {
 
         Todo todo = new Todo(content, member);
         todoRepository.save(todo);
+        return todo.getId();
     }
 
     @Transactional(readOnly = true)

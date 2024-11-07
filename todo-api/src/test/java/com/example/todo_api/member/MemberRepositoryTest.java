@@ -26,7 +26,7 @@ public class MemberRepositoryTest {
     @Test
     @Transactional
     @Rollback(false)
-    void createMember() {
+    void createMember() throws Exception {
         //given
         Member member = new Member("abcdef", "1q2w3e4r");
         memberRepository.save(member);
@@ -38,7 +38,7 @@ public class MemberRepositoryTest {
 
     @Test
     @Transactional
-    void memberFindOneByIdTest() {
+    void memberFindOneByIdTest() throws Exception {
         //given
         Member member = new Member("abcd", "1q2w3e4r");
         memberRepository.save(member);
@@ -52,7 +52,7 @@ public class MemberRepositoryTest {
 
     @Test
     @Transactional
-    void memberFindAllTest() {
+    void memberFindAllTest() throws Exception {
         Member member1 = new Member("abcd", "1q2w3e4r");
         Member member2 = new Member("efgh", "1q2w3e4r");
         Member member3 = new Member("ijkl", "1q2w3e4r");
@@ -67,8 +67,20 @@ public class MemberRepositoryTest {
 
     @Test
     @Transactional
+    void memberFindByLoginIdAndPassword() throws Exception {
+        Member member = new Member("abcd", "1q2w");
+        memberRepository.save(member);
+
+        memberRepository.flushAndClear();
+
+        Member findMember = memberRepository.findByLoginIdAndPassword(member.getLogin_id(), member.getLogin_password());
+        Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
+    }
+
+    @Test
+    @Transactional
     @Rollback(false)
-    void memberUpdateTest() {
+    void memberUpdateTest() throws Exception {
         Member member = new Member("abcd", "1q2w3e4r");
         memberRepository.save(member);
 
@@ -81,7 +93,7 @@ public class MemberRepositoryTest {
     @Test
     @Transactional
     @Rollback(false)
-    void memberRemoveTest() {
+    void memberRemoveTest() throws Exception {
         Member member1 =new Member("abcd", "1q2w3e4r");
         Member member2 = new Member("efgh", "1q2w3e4r");
 
@@ -90,6 +102,6 @@ public class MemberRepositoryTest {
 
         memberRepository.flushAndClear();
 
-        memberRepository.removeByID(member1.getId());
+        memberRepository.deleteByID(member1.getId());
     }
 }

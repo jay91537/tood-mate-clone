@@ -27,10 +27,32 @@ public class MemberRepository {
         return em.createQuery("select m from Member as m", Member.class).getResultList();
     }
 
+    public Member findByLoginIdAndPassword(String login_id, String login_password) {
+        try {
+            return em.createQuery(
+                            "SELECT m FROM Member m WHERE m.login_id = :login_id AND m.login_password = :login_password", Member.class)
+                    .setParameter("login_id", login_id)
+                    .setParameter("login_password", login_password)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean existsByLoginId(String newLoginId) {
+            Long count = em.createQuery(
+                            "SELECT COUNT(m) FROM Member m WHERE m.login_id = :loginId", Long.class)
+                    .setParameter("loginId", newLoginId)
+                    .getSingleResult();
+
+            return count > 0;
+        }
+
+
     // 수정
 
     // 삭제
-    public void removeByID(Long memberId) {
+    public void deleteByID(Long memberId) {
         Member member = findById(memberId);
         em.remove(member);
     }
@@ -39,6 +61,5 @@ public class MemberRepository {
         em.flush();
         em.clear();
     }
-
 
 }
