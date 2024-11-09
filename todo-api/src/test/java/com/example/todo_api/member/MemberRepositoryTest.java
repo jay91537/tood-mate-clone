@@ -102,6 +102,6 @@ public class MemberRepositoryTest {
 
         memberRepository.flushAndClear();
 
-        memberRepository.deleteByID(member1.getId());
+        memberRepository.deleteById(member1.getId());
     }
 }

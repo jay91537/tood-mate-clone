@@ -52,7 +52,7 @@ public class MemberRepository {
     // 수정
 
     // 삭제
-    public void deleteByID(Long memberId) {
+    public void deleteById(Long memberId) {
         Member member = findById(memberId);
         em.remove(member);
     }

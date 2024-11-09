@@ -22,11 +22,35 @@ public class FriendRepository {
 
     // 친구 관계 조회
     // 우리는 인자로 받은 member의 friend 관계를 찾을거예요
+    // 단순 찾기
     public List<Friend> findByMember(Member member) {
-        return em.createQuery("select f from Friend f where f.request_member = :member_check or f.Response_member = :member_check", Friend.class)
+        return em.createQuery("select f from Friend f where f.request_member = :member_check or f.response_member = :member_check", Friend.class)
                 .setParameter("member_check", member)
                 .getResultList();
     }
+
+    public Friend findByRequestAndResponseMember(Member request_member, Member response_member) {
+        return em.createQuery("select f from Friend f" +
+                        " where (f.request_member = :requestMember and f.response_member = :responseMember)" +
+                        "AND (f.request_member = :responseMember AND f.response_member = :requestMember)", Friend.class)
+                .setParameter("requestMember", request_member)
+                .setParameter("responseMember", response_member)
+                .getSingleResult();
+    }
+
+    // 친구 관계 양방향 쌍을 찾기
+    public boolean existsByMembers(Member request_member, Member response_member) {
+        Long count = em.createQuery(
+                        "SELECT COUNT(f) FROM Friend f " +
+                                "WHERE (f.request_member = :requestMember AND f.response_member = :responseMember) " +
+                                "OR (f.request_member = :responseMember AND f.response_member = :requestMember)", Long.class)
+                .setParameter("requestMember", request_member)
+                .setParameter("responseMember", response_member)
+                .getSingleResult();
+        return count > 0;
+    }
+
+
 
     // 테스트 용도로만 사용
     public void flushAndClear() {

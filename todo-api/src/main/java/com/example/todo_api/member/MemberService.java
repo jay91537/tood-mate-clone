@@ -72,6 +72,6 @@ public class MemberService {
             throw new Exception("존재하지 않는 계정입니다.");
         }
 
-        memberRepository.deleteByID(memberId);
+        memberRepository.deleteById(memberId);
     }
 }

@@ -22,10 +22,10 @@ public class Friend {
 
     @JoinColumn(name = "friend_member_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member Response_member;
+    private Member response_member;
 
     public Friend(Member request_member, Member response_member) {
         this.request_member = request_member;
-        this.Response_member = response_member;
+        this.response_member = response_member;
     }
 }

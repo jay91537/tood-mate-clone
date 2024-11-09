@@ -8,6 +8,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -132,7 +133,7 @@ public class MemberServiceTest {
         memberService.deleteMember(1L);
 
         //then
-        verify(memberRepository, times(1)).deleteByID(anyLong());
+        verify(memberRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
