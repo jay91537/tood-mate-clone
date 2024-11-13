@@ -144,7 +144,7 @@ public class FriendServiceTest {
         BDDMockito.given(friendRepository.findByRequestAndResponseMember(member1, member2)).willReturn(friend);
 
         // when
-        friendService.deleteFriend(1L, 2L);
+        friendService.deleteFriend(1L);
 
         // then
         verify(friendRepository, times(1)).findByRequestAndResponseMember(any(Member.class), any(Member.class));

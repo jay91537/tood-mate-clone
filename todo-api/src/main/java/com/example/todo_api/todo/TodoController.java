@@ -1,14 +1,18 @@
 package com.example.todo_api.todo;
 
 import com.example.todo_api.todo.dto.TodoCreateRequest;
+import com.example.todo_api.todo.dto.TodoResponse;
 import com.example.todo_api.todo.dto.TodoUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
 
+//@RESPONSEBODY
+//@Controller
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/todo")
@@ -18,7 +22,7 @@ public class TodoController {
 
 
     @PostMapping
-    // @RequestMapping(method = RequestMethod.POST)
+    // @RequestMapping(method = RequestMethod.POST, path = "/todo")
     public ResponseEntity<Void> createTodo(@RequestBody TodoCreateRequest request) throws Exception {
         Long todoId = todoService.createTodo(request.getContent(), request.getMemberId());
         //todoService.createTodo(request);
@@ -32,15 +36,15 @@ public class TodoController {
     }
 
     @DeleteMapping("/{todoId}")
-    public ResponseEntity<Object> deleteTodo(@PathVariable Long todoId) throws Exception{
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long todoId) throws Exception{
         todoService.deleteTodo(todoId);
         return ResponseEntity.noContent().build();
     }
-/*
+
     @PatchMapping("/{todoId}")
     public ResponseEntity<Void> updateTodo(@PathVariable Long todoId, @RequestBody TodoUpdateRequest request) throws Exception {
         todoService.updateTodo(todoId, request.getMemberId(), request.getUpdateContent());
         return ResponseEntity.ok().build();
     }
- */
+
 }

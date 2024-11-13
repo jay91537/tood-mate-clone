@@ -29,6 +29,10 @@ public class FriendRepository {
                 .getResultList();
     }
 
+    public Friend findById(Long friendId) {
+        return em.find(Friend.class, friendId);
+    }
+
     public Friend findByRequestAndResponseMember(Member request_member, Member response_member) {
         return em.createQuery("select f from Friend f" +
                         " where (f.request_member = :requestMember and f.response_member = :responseMember)" +

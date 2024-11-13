@@ -19,7 +19,7 @@ public class FriendService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void createFriend(Long request_memberId, Long response_memberId) throws Exception{
+    public Long createFriend(Long request_memberId, Long response_memberId) throws Exception{
 
         if (memberRepository.findById(request_memberId) == null) {
             throw new Exception("존재하지 않는 계정입니다.");
@@ -38,6 +38,8 @@ public class FriendService {
 
         Friend friend = new Friend(request_member, response_member);
         friendRepository.save(friend);
+
+        return friend.getId();
     }
 
     // 어떤 멤버의 친구명단을 모두 가져옴
@@ -51,9 +53,11 @@ public class FriendService {
 
         List<Friend> friendRelationList = friendRepository.findByMember(member);
 
-        if(friendRelationList == null) {
+        if(friendRelationList.isEmpty()) {
             throw new Exception("친구가 존재하지 않습니다.");
         }
+
+        System.out.println("friendRelationList = " + friendRelationList.get(0));
 
         // int i = 0;
         List<Member> friendList = new ArrayList<>();
@@ -77,13 +81,15 @@ public class FriendService {
 
     // 친구관계를 끊어버리는거
     @Transactional
-    public void deleteFriend(Long request_memberId, Long response_memberId) throws Exception {
+    public void deleteFriend(Long friendId) throws Exception {
 
-        Member requestMember = memberRepository.findById(request_memberId);
-        Member responseMember = memberRepository.findById(response_memberId);
+        Friend friend = friendRepository.findById(friendId);
 
-        Friend deleteFriendList = friendRepository.findByRequestAndResponseMember(requestMember, responseMember);
+        // Member requestMember = memberRepository.findById(friend.getRequest_member().getId());
+        // Member responseMember = memberRepository.findById(friend.getResponse_member().getId());
 
-        friendRepository.delete(deleteFriendList);
+        // Friend deleteFriendList = friendRepository.findByRequestAndResponseMember(requestMember, responseMember);
+
+        friendRepository.delete(friend);
     }
 }
