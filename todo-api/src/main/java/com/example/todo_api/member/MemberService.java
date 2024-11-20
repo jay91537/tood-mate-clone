@@ -1,5 +1,6 @@
 package com.example.todo_api.member;
 
+import com.example.todo_api.common.message.ErrorMessage;
 import com.example.todo_api.friend.FriendRepository;
 import com.example.todo_api.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class MemberService {
 
         Member member = memberRepository.findById(memberId);
         if(member == null) {
-            throw new Exception("존재하지 않는 계정입니다.");
+            throw new Exception(ErrorMessage.MEMBER_ID_MUST_BE_NOT_NULL);
         }
 
         //아이디 겹치면 안되니까
@@ -65,7 +66,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId);
 
         if(member == null) {
-            throw new Exception("존재하지 않는 계정입니다.");
+            throw new Exception(ErrorMessage.MEMBER_ID_MUST_BE_NOT_NULL);
         }
 
         memberRepository.deleteById(memberId);

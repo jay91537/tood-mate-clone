@@ -1,5 +1,7 @@
 package com.example.todo_api.todo;
 
+import com.example.todo_api.common.exception.BadRequestException;
+import com.example.todo_api.common.message.ErrorMessage;
 import com.example.todo_api.member.Member;
 import com.example.todo_api.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class TodoService {
         Member member = memberRepository.findById(memberId);
 
         if(member == null){
-            throw new Exception("존재하지 않는 Id입니다.");
+            throw new BadRequestException(ErrorMessage.MEMBER_NOT_EXISTS);
         }
 
         Todo todo = new Todo(content, member);
@@ -32,7 +34,7 @@ public class TodoService {
     public List<Todo> getTodoList(Long memberId) throws Exception{
         Member member = memberRepository.findById(memberId);
         if(member == null) {
-            throw new Exception("존재하지 않는 Id입니다.");
+            throw new BadRequestException(ErrorMessage.MEMBER_NOT_EXISTS);
         }
         return todoRepository.findAllByMember(member);
     }
@@ -44,12 +46,12 @@ public class TodoService {
 
         if (todo == null) {
 
-            throw new Exception("존재하지 않는 todoId입니다.");
+            throw new Exception(ErrorMessage.TODO_NOT_EXISTS);
         }
 
         if (member == null) {
 
-            throw new Exception("존재하지 않는 memberId입니다.");
+            throw new Exception(ErrorMessage.MEMBER_NOT_EXISTS);
         }
 
         if(todo.getMember() != member){
@@ -66,7 +68,7 @@ public class TodoService {
 
         if (todo == null) {
 
-            throw new Exception("존재하지 않는 todoId입니다.");
+            throw new Exception(ErrorMessage.TODO_NOT_EXISTS);
         }
 
         todoRepository.deleteById(todoId);

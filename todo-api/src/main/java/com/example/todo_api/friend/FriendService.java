@@ -1,9 +1,12 @@
 package com.example.todo_api.friend;
 
+import com.example.todo_api.common.exception.BadRequestException;
+import com.example.todo_api.common.message.ErrorMessage;
 import com.example.todo_api.member.Member;
 import com.example.todo_api.member.MemberRepository;
 import com.example.todo_api.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +25,10 @@ public class FriendService {
     public Long createFriend(Long request_memberId, Long response_memberId) throws Exception{
 
         if (memberRepository.findById(request_memberId) == null) {
-            throw new Exception("존재하지 않는 계정입니다.");
+            throw new BadRequestException(ErrorMessage.MEMBER_ID_MUST_BE_NOT_NULL);
         }
         if (memberRepository.findById(response_memberId) == null) {
-            throw new Exception("존재하지 않는 계정입니다.");
+            throw new BadRequestException(ErrorMessage.MEMBER_ID_MUST_BE_NOT_NULL);
         }
 
         Member request_member = memberRepository.findById(request_memberId);
@@ -47,8 +50,9 @@ public class FriendService {
     public List<Member> getFriend(Long memberId) throws Exception {
 
         Member member = memberRepository.findById(memberId);
+
         if(member == null) {
-            throw new Exception("존재하지 않는 계정입니다.");
+            throw new BadRequestException(ErrorMessage.MEMBER_ID_MUST_BE_NOT_NULL);
         }
 
         List<Friend> friendRelationList = friendRepository.findByMember(member);
@@ -57,14 +61,14 @@ public class FriendService {
             throw new Exception("친구가 존재하지 않습니다.");
         }
 
-        System.out.println("friendRelationList = " + friendRelationList.get(0));
-
-        // int i = 0;
         List<Member> friendList = new ArrayList<>();
 
         for (Friend friendRelation : friendRelationList) {
+
             if (friendRelation.getRequest_member().equals(member)) {
                 friendList.add(friendRelation.getResponse_member());
+            } else if (friendRelation.getResponse_member().equals(member)) {
+                friendList.add(friendRelation.getRequest_member());
             }
         }
 

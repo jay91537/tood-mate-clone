@@ -3,6 +3,7 @@ package com.example.todo_api.member;
 import com.example.todo_api.member.dto.MemberCreateRequest;
 import com.example.todo_api.member.dto.MemberGetRequest;
 import com.example.todo_api.member.dto.MemberUpdateRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +19,14 @@ public class MemberController {
 
 
     @PostMapping
-    public ResponseEntity<Void> createMember(@RequestBody MemberCreateRequest request) throws Exception {
+    public ResponseEntity<Void> createMember(@RequestBody @Valid MemberCreateRequest request) throws Exception {
         Long memberId = memberService.createMember(request.getLoginId(), request.getLoginPassword());
 
         return ResponseEntity.created(URI.create("/member/" + memberId)).build();
     }
 
     @GetMapping("/")
-    public ResponseEntity<Long> getMember(@RequestBody MemberGetRequest request) throws Exception {
+    public ResponseEntity<Long> getMember(@RequestBody @Valid MemberGetRequest request) throws Exception {
 
         Member member = memberService.getMember(request.getLoginId(), request.getLoginPassword());
 
@@ -39,7 +40,7 @@ public class MemberController {
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<Void> updateMember(@PathVariable Long memberId, @RequestBody MemberUpdateRequest request) throws Exception {
+    public ResponseEntity<Void> updateMember(@PathVariable Long memberId, @RequestBody @Valid MemberUpdateRequest request) throws Exception {
         memberService.updateMember(request.getMemberId(), request.getNewLoginId());
         return ResponseEntity.ok().build();
     }
